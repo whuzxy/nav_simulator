@@ -1,0 +1,55 @@
+
+<launch>
+ <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  
+<param name="speed_x" type="double" value="0.0" />
+<param name="speed_theta" type="double" value="0.0" />
+ <param name = "serve_ip" value= "192.168.12.168"/>
+<!--<remap from="base_scan" to="scan" />-->
+   <node name="map_server_3d" pkg="map_server_3d" type="map_server_3d" args="$(find diff_robot)/maps/factory.yaml" output="screen"/>
+
+
+  <node pkg="robot_localizer" type="robot_localizer" name="robot_localizer">
+  </node>
+  <node pkg="robot_localizer" type="lidar_match" name="lidar_match">
+  <param name = "cloudmap" value= "/home/robot/data-ndt/factory.pcd"/>
+  </node>
+  <node pkg="robot_localizer" type="odom2map_node" name="odom2map_node">
+  </node>
+  <node pkg="robot_network" type="robot_network_node" name="robot_network_node" output="screen">
+  </node>
+  <!--
+  <node pkg="tf" type="static_transform_publisher" name="tf1" args="0 0 0 0 0 0 /map /odom 100"/>-->
+  
+
+
+
+	<!-- Launch visualization in rviz -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find diff_robot)/nav3d.rviz" required="true" />
+
+
+	
+
+       
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	<!--<param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+ 	<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/> 
+ 	<param name="heading_scoring" type="bool"  value="true"/>-->
+    <param name="controller_frequency" value="10.0"/>
+    <param name="controller_patiente" value="0.0"/>
+    
+    <rosparam file="$(find diff_robot)/config3d/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find diff_robot)/config3d/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find diff_robot)/config3d/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find diff_robot)/config3d/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find diff_robot)/config3d/base_local_planner_params.yaml" command="load" />
+    
+    
+  </node>
+
+</launch>

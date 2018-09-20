@@ -1,0 +1,13 @@
+material Logo
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture logo.png
+      }
+    }
+  }
+}

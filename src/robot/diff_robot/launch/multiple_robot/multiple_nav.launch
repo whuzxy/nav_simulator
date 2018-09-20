@@ -1,0 +1,117 @@
+ 
+<!--
+<launch>
+  <param name="/use_sim_time" value="true"/>
+  
+   <node name="map_server" pkg="map_server" type="map_server" args="$(find diff_robot)/maps/map.yaml" output="screen">
+<param name="frame_id" value="/map" />
+  </node>
+
+  <group ns="robot1">
+    <param name="tf_prefix" value="robot1" />
+    <param name="amcl/initial_pose_x" value="1" />
+    <param name="amcl/initial_pose_y" value="0" />
+    
+    <include file="$(find diff_robot)/launch/multiple_robot/move_base.launch" />
+    <node pkg="tf" type="static_transform_publisher" name="tf1" args="0 0 0 0 0 0 map robot1/odom 100"/>
+  </group>
+
+  <group ns="robot2">
+    <param name="tf_prefix" value="robot2" />
+    <param name="amcl/initial_pose_x" value="-1" />
+    <param name="amcl/initial_pose_y" value="0" />
+    
+    <include file="$(find diff_robot)/launch/multiple_robot/move_base.launch" />
+    <node pkg="tf" type="static_transform_publisher" name="tf1" args="0 0 0 0 0 0 map robot2/odom 100"/>
+  </group>
+
+<remap from="robot1/base_scan" to="robot1/scan" />
+<remap from="robot2/base_scan" to="robot2/scan" />
+</launch>-->
+ <launch>
+
+
+<remap from="/robot1/base_scan" to="/robot1/scan" />
+<remap from="/robot2/base_scan" to="/robot2/scan" />
+ <node name="map_server" pkg="map_server" type="map_server" args="$(find diff_robot)/maps/map.yaml" output="screen">
+<param name="frame_id" value="/map" />
+  </node>
+  <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+  <group ns="robot1">
+    <param name="tf_prefix" value="robot1" />
+    <param name="amcl/initial_pose_x" value="1" />
+
+    <include file="$(find amcl)/examples/amcl_diff.launch" >
+      <arg name="robot_num" value="1" />
+    </include>
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	<param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+<!--  	<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>-->
+    <param name="controller_frequency" value="10.0"/>
+    <param name="controller_patiente" value="1.0"/>
+    <rosparam file="$(find diff_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find diff_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find diff_robot)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find diff_robot)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find diff_robot)/config/base_local_planner_params.yaml" command="load" />
+    <remap from="map" to="/map" />
+
+    </node>
+
+    <include file="$(find diff_robot)/launch/multiple_robot/one_robot.launch" >
+      <arg name="init_pose" value="-x 1 -y 0 -z 0" />
+      <arg name="robot_name"  value="Robot1" />
+      
+    </include>
+    <!-- <node pkg="tf" type="static_transform_publisher" name="tf1" args="0 0 0 0 0 0 map robot1/odom 100"/> -->
+  </group>
+
+
+  <group ns="robot2">
+    <param name="tf_prefix" value="robot2" />
+    <param name="amcl/initial_pose_x" value="-1" />
+    <!-- <include file="$(find diff_robot)/launch/multiple_robot/move_base.launch" /> -->
+
+    <include file="$(find amcl)/examples/amcl_diff.launch" >
+      <arg name="robot_num" value="2" />
+    </include>
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	<param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+<!--  	<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>-->
+    <param name="controller_frequency" value="10.0"/>
+    <param name="controller_patiente" value="1.0"/>
+    <rosparam file="$(find diff_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find diff_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find diff_robot)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find diff_robot)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find diff_robot)/config/base_local_planner_params.yaml" command="load" />
+    <remap from="map" to="/map" />
+
+    </node>
+
+    <include file="$(find diff_robot)/launch/multiple_robot/one_robot.launch" >
+      <arg name="init_pose" value="-x -1 -y 0 -z 0" />
+      <arg name="robot_name"  value="Robot2" />
+      
+    </include>
+    <!-- <node pkg="tf" type="static_transform_publisher" name="tf1" args="0 0 0 0 0 0 map robot2/odom 100"/> -->
+    
+  </group>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find diff_robot)/mul_nav.rviz" required="true" />
+
+
+</launch> 
