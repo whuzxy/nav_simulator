@@ -39,7 +39,7 @@
         <box size="0.05 2.1 0.05"/>
       </geometry>
       <!-- <geometry>
-        <mesh filename="package://car_sim/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://vehicle_sim/meshes/hybrid_body.obj" scale="0.01 0.01 0.01"/>
       </geometry> -->
     </visual>
 
@@ -147,7 +147,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://car_sim/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://vehicle_sim/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -166,7 +166,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://car_sim/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://vehicle_sim/meshes/wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -202,7 +202,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.302101 0 0"/>
       <geometry>
-        <mesh filename="package://car_sim/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://vehicle_sim/meshes/steering_wheel.obj" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
   </link>
@@ -218,7 +218,7 @@
 
 
   <gazebo>
-    <plugin name="pruis_hybrid_drive" filename="libmyPriusHybridPlugin_2w.so">
+    <plugin name="pruis_hybrid_drive" filename="libControlHybridPlugin_2w.so">
       <chassis>base_link</chassis>
       <front_left_wheel>front_left_wheel_joint</front_left_wheel>
       <!-- <front_right_wheel>front_right_wheel_joint</front_right_wheel> -->

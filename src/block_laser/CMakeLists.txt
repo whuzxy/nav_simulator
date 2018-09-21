@@ -21,9 +21,10 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
 
+link_directories(${GAZEBO_LIBRARY_DIRS})
 add_library(block_laser_16 SHARED src/block_laser_16.cpp)
 add_dependencies(block_laser_16 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(block_laser_16 ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${IGNITION-MSGS_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(block_laser_16 RayPlugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${IGNITION-MSGS_LIBRARIES} ${PCL_LIBRARIES})
 
 install(TARGETS block_laser_16
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

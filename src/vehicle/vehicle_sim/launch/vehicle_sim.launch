@@ -1,0 +1,42 @@
+<launch>
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <!-- gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">    
+    <arg name="verbose" value="true"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="world_name" value="$(find vehicle_sim)/worlds/my.world"/>
+  </include>
+
+  <arg name="model" default="$(find vehicle_sim)/urdf/vehicle.xacro"/>
+	<param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+  args="-param robot_description -urdf -x 3 -y -12 -z 0.5 -model vehicle"  respawn="false" output="screen"/>
+
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+  <!-- gazebo -->
+	<!-- Launch visualization in rviz -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find vehicle_sim)/nav3d.rviz" required="true" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="very_inaccurate_odom" args="0 0 0 0 0 0 odom base_link"  output="screen"/>
+
+  <!-- <node pkg="control_plugins" type="joystick_translator" name="joystick_translator"/>
+  <node pkg="joy" type="joy_node" name="joy_node0">
+    <param name="dev" value="/dev/input/js0"/>
+  </node> -->
+
+  
+
+
+
+
+
+
+</launch>

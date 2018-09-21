@@ -1,45 +1,35 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+#A Simulator Of diff_wheels_robot And Vehicle Navigation
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
-
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+These ROS packages are used to simulate the environment of 3D navigation
 
 ---
 
-## Edit a file
+## dependences
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
-
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+1. Based on indigo of Ubuntu 14.04
+2. gazebo and gazebo_ros (I used gazebo7)
+3. PCL(needed if you want use multiwire laser, it is required in package **block_laser**)
 
 ---
 
-## Create a file
+## introduce
 
-Next, you’ll add a new file to this repository.
+There are five packages .
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
-
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
-
+1. **block_laser** Multiwire laser plugin.You can change the paraments to simulate velodyne laser or other laser . The data is published in format of sensor_msgs::PointCloud2.
+2. **diff_robot** Models of diff_wheels_robot.You can add block laser, hokuyo laser or kinect.(multiple_robot is testing)
+3. **control_msgs** Messages of controlling the four_wheeled_car.
+4. **control_plugin** A gazebo plugin of controlling the four_wheeled_car.You can control the car by joystick.
+5. **vehicle_sim** Models of four_wheeled_car.Come form [car_demo](https://github.com/osrf/car_demo).(two_wheeled_bike is testing)
+ 
 ---
 
-## Clone a repository
+## usage
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
+1. Just build the packages as common ROS packages.
+2. `roslaunch diff_robot nav_sim.launch` to launch the robot simulation.
+3. `roslaunch vehicle_sim vehicle_sim.launch` to launch the vehicle simulation.
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+## others
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+1. There may be some problems in building **block_laser**. I used `gazebo7`, `ignition-msgs0`and`ignition-transport3`.If the differences of version make the errors in building, you can `1.change the version` or `2.edit the file block_laser_16.cpp to adapte the API`.Good luck. 

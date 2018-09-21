@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="model" default="$(find car_sim)/urdf/bike.urdf"/>
+  <arg name="model" default="$(find vehicle_sim)/urdf/bike.urdf"/>
   <arg name="rvizconfig" default="$(find car_demo)/rviz/demo.rviz" />
 
   <param name="robot_description" textfile="$(arg model)"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="verbose" value="true"/>
-    <arg name="world_name" value="$(find car_sim)/worlds/my.world"/>
+    <arg name="world_name" value="$(find vehicle_sim)/worlds/my.world"/>
   </include>
 
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
@@ -20,8 +20,8 @@
   <node pkg="tf2_ros" type="static_transform_publisher" name="very_inaccurate_odom" args="0 0 0 0 0 0 odom base_link"  output="screen"/>
   <!-- <node pkg="car_demo" type="joystick_translator" name="joystick_translator"/> -->
 
-  <!-- <node pkg="car_sim" type="cmdvel_translator" name="cmdvel_translator"/> -->
-  <node pkg="car_sim" type="joystick_translator" name="joystick_translator"/>
+  <!-- <node pkg="vehicle_sim" type="cmdvel_translator" name="cmdvel_translator"/> -->
+  <node pkg="control_plugins" type="joystick_translator" name="joystick_translator"/>
 
   <!-- Run two joy nodes publishing to the same topic, just to cover two possible joystick locations -->
   <node pkg="joy" type="joy_node" name="joy_node0">

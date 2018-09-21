@@ -1,5 +1,9 @@
 {
     "python.autoComplete.extraPaths": [
         "/opt/ros/indigo/lib/python2.7/dist-packages"
-    ]
+    ],
+    "files.associations": {
+        "*.ipp": "cpp",
+        "system_error": "cpp"
+    }
 }
