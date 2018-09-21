@@ -1,4 +1,4 @@
-#A Simulator Of diff_wheels_robot And Vehicle Navigation
+# A Simulator Of Diff_wheeled_robot And Vehicle Navigation
 
 These ROS packages are used to simulate the environment of 3D navigation
 
@@ -32,4 +32,4 @@ There are five packages .
 
 ## others
 
-1. There may be some problems in building **block_laser**. I used `gazebo7`, `ignition-msgs0`and`ignition-transport3`.If the differences of version make the errors in building, you can `1.change the version` or `2.edit the file block_laser_16.cpp to adapte the API`.Good luck. 
+1. There may be some problems in building **block_laser**. I used `gazebo7`, `ignition-msgs0`and`ignition-transport3`.If the differences of version make the errors in building, you can `1.change the version` or `2.edit the file block_laser_16.cpp to adapte the API`.Good luck.  
